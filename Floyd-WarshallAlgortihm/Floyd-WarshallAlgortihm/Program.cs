@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,32 @@ namespace adjacency_matrix
         static int infinity = 1000000;
         static void Main(string[] args)
         {
-            int[,] adjacency_matrix;
-            // string inputFile = File.ReadAllText("input.txt");
+            int[,] adjacency_matrix = new int[100,100];
+
+            string inputFile = null;
+            if (File.Exists("input.txt"))
+                inputFile = File.ReadAllText("input.txt");
+            else
+            {
+                Console.WriteLine("File input.txt was not found!");
+                Console.WriteLine("Creating input.txt and opening it with notepad:");
+                Process.Start("notepad.exe", "input.txt");
+            }
+
+            int i = 0;
+            for (int j = 0; j < inputFile.Length; j++)
+            {
+                if (inputFile[j] != ',')
+                {
+                    //adjacency_matrix[i, j] = // inputFile[i].ToString();
+                }
+                if (inputFile[j] == ';')
+                {
+                    
+                }
+            }
+            
+
 
             int[,] distance_matrix;
             bool[,] transitive_matrix;
@@ -81,7 +106,7 @@ namespace adjacency_matrix
 
         private static bool[,] transitive_Closure(int[,] adjacency_matrix)
         {
-            bool[,] transitive_matrix = { new bool[] { false, false, false, false, false }, new bool[] { false, false, false, false, false }, new bool[] { false, false, false, false, false }, new bool[] { false, false, false, false, false }, new bool[] { false, false, false, false, false } };
+            bool[,] transitive_matrix = new bool[1,1];
             for (int a = 0; a < adjacency_matrix.Length; a++)
             {
                 for (int b = 0; b < adjacency_matrix.Length; b++)
