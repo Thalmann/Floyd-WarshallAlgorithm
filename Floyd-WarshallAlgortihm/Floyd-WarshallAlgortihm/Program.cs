@@ -11,13 +11,11 @@ namespace adjacency_matrix
 {
     class Program
     {
-        static int infinity = 1000000;
-        static int tableSize = 3;
+        static int infinity = 1000;
+        static int tableSize = 0;
 
         static void Main(string[] args)
         {
-            int[,] adjacency_matrix = new int[tableSize, tableSize];
-
             string inputFile = null;
             if (File.Exists("input.txt"))
                 inputFile = File.ReadAllText("input.txt");
@@ -29,6 +27,12 @@ namespace adjacency_matrix
             }
 
             inputFile = inputFile.Replace("\r\n", "").Replace(",","");
+
+            calculateTableSize(inputFile);
+
+            int[,] adjacency_matrix = new int[tableSize, tableSize];
+            int[,] distance_matrix = new int[tableSize, tableSize];
+            bool[,] transitive_matrix = new bool[tableSize, tableSize];
 
             int x = 0, y = 0;
             for (int j = 0; j < inputFile.Length; j++)
@@ -47,47 +51,43 @@ namespace adjacency_matrix
             
 
 
-            int[,] distance_matrix = new int[tableSize,tableSize];
-            bool[,] transitive_matrix = new bool[tableSize, tableSize];
+            printMatrix(adjacency_matrix);
 
+            distance_matrix = floyd_Warshall(adjacency_matrix);
+
+            printMatrix(distance_matrix);
+
+            transitive_matrix = transitive_Closure(adjacency_matrix);
+
+            printMatrix(transitive_matrix);
+
+            Console.ReadKey();
+        }
+
+        private static void calculateTableSize(string inputFile)
+        {
+            for (int i = 0; i < inputFile.Length; i++)
+            {
+                if (inputFile[i] == ';')
+                {
+                    tableSize = i;
+                    break;
+                }
+            }
+        }
+
+        private static void printMatrix<T>(T[,] adjacency_matrix)
+        {
             Console.WriteLine("Adjacency matrix:");
             for (int z = 0; z < tableSize; z++)
             {
                 for (int c = 0; c < tableSize; c++)
                 {
-                    Console.Write(adjacency_matrix[z,c] + " ");
+                    Console.Write(adjacency_matrix[z, c] + " ");
                 }
                 Console.WriteLine("");
                 Console.WriteLine("");
             }
-
-            distance_matrix = floyd_Warshall(adjacency_matrix);
-
-            Console.WriteLine("Distance matrix:");
-            for (int z = 0; z < tableSize; z++)
-            {
-                for (int c = 0; c < tableSize; c++)
-                {
-                    Console.Write(distance_matrix[z,c] + " ");
-                }
-                Console.WriteLine("");
-                Console.WriteLine("");
-            }
-
-            transitive_matrix = transitive_Closure(adjacency_matrix);
-
-            //Console.WriteLine("Transitive Matrix:");
-            //for (int x = 0; x < transitive_matrix.Length; x++)
-            //{
-            //    for (int y = 0; y < transitive_matrix.Length; y++)
-            //    {
-            //        Console.Write(transitive_matrix[x][y] + " ");
-            //    }
-            //    Console.WriteLine("");
-            //    Console.WriteLine("");
-            //}
-
-            Console.ReadKey();
         }
 
         private static int[,] floyd_Warshall(int[,] adjacency_matrix)
