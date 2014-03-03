@@ -58,8 +58,6 @@ namespace adjacency_matrix
                 }
             }
             
-
-
             printMatrix(adjacency_matrix);
 
             distance_matrix = floyd_Warshall(adjacency_matrix);
@@ -114,7 +112,6 @@ namespace adjacency_matrix
                             distance_matrix[i,j] = distance_matrix[i,k] + distance_matrix[k,j];
                         }
                     }
-
                 }
             }
             return distance_matrix;
@@ -122,21 +119,8 @@ namespace adjacency_matrix
 
         private static bool[,] transitive_Closure(int[,] adjacency_matrix)
         {
-            bool[,] transitive_matrix = new bool[tableSize, tableSize];
-            for (int a = 0; a < tableSize; a++)
-            {
-                for (int b = 0; b < tableSize; b++)
-                {
-                    if (adjacency_matrix[a,b] > 0 && adjacency_matrix[a,b] < infinity)
-                    {
-                        transitive_matrix[a,b] = true;
-                    }
-                    else
-                    {
-                        transitive_matrix[a,b] = false;
-                    }
-                }
-            }
+            
+            bool[,] transitive_matrix = transformAdjacencyMatrixToTransitiveMatrix(adjacency_matrix);
             for (int k = 0; k < tableSize; k++)
             {
                 for (int i = 0; i < tableSize; i++)
@@ -146,6 +130,26 @@ namespace adjacency_matrix
                         transitive_matrix[i,j] = transitive_matrix[i,j] || (transitive_matrix[i,k] && transitive_matrix[k,j]);
                     }
 
+                }
+            }
+            return transitive_matrix;
+        }
+
+        private static bool[,] transformAdjacencyMatrixToTransitiveMatrix(int[,] adjacency_matrix)
+        {
+            bool[,] transitive_matrix = new bool[tableSize, tableSize];
+            for (int a = 0; a < tableSize; a++)
+            {
+                for (int b = 0; b < tableSize; b++)
+                {
+                    if (adjacency_matrix[a, b] > 0 && adjacency_matrix[a, b] < infinity)
+                    {
+                        transitive_matrix[a, b] = true;
+                    }
+                    else
+                    {
+                        transitive_matrix[a, b] = false;
+                    }
                 }
             }
             return transitive_matrix;
