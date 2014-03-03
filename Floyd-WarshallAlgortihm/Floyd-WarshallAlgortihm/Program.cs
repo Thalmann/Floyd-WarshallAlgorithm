@@ -24,28 +24,37 @@ namespace adjacency_matrix
                 Console.WriteLine("File input.txt was not found!");
                 Console.WriteLine("Creating input.txt and opening it with notepad:");
                 Process.Start("notepad.exe", "input.txt");
+                Console.WriteLine("Press any key to continue..");
+                Console.ReadKey();
+                inputFile = File.ReadAllText("input.txt");
             }
 
-            inputFile = inputFile.Replace("\r\n", "").Replace(",","");
+            string temp = inputFile.Replace("\r\n", "").Replace(",","");
 
-            calculateTableSize(inputFile);
+            calculateTableSize(temp);
 
             int[,] adjacency_matrix = new int[tableSize, tableSize];
             int[,] distance_matrix = new int[tableSize, tableSize];
             bool[,] transitive_matrix = new bool[tableSize, tableSize];
 
+            inputFile = inputFile.Replace("\r\n", "");
+            string[] output = Regex.Split(inputFile, ",|(;)");
+
             int x = 0, y = 0;
-            for (int j = 0; j < inputFile.Length; j++)
+            for (int j = 0; j < output.Length; j++)
             {
-                if (inputFile[j] != ';')
+                if (!String.IsNullOrWhiteSpace(output[j]))
                 {
-                    adjacency_matrix[x, y] = Convert.ToInt32(inputFile[j].ToString());
-                    y++;
-                }
-                if (inputFile[j] == ';')
-                {
-                    x++;
-                    y = 0;
+                    if (output[j] != ";")
+                    {
+                        adjacency_matrix[x, y] = Convert.ToInt32(output[j]);
+                        y++;
+                    }
+                    if (output[j] == ";")
+                    {
+                        x++;
+                        y = 0;
+                    }
                 }
             }
             
