@@ -29,16 +29,15 @@ namespace adjacency_matrix
                 inputFile = File.ReadAllText("input.txt");
             }
 
-            string temp = inputFile.Replace("\r\n", "").Replace(",","");
+            string[] output = Regex.Split(inputFile, ",|(;)");
 
-            calculateTableSize(temp);
+            calculateTableSize(output);
 
             int[,] adjacency_matrix = new int[tableSize, tableSize];
             int[,] distance_matrix = new int[tableSize, tableSize];
             bool[,] transitive_matrix = new bool[tableSize, tableSize];
-
-            inputFile = inputFile.Replace("\r\n", "");
-            string[] output = Regex.Split(inputFile, ",|(;)");
+         
+            
 
             int x = 0, y = 0;
             for (int j = 0; j < output.Length; j++)
@@ -71,11 +70,11 @@ namespace adjacency_matrix
             Console.ReadKey();
         }
 
-        private static void calculateTableSize(string inputFile)
+        private static void calculateTableSize(string[] s)
         {
-            for (int i = 0; i < inputFile.Length; i++)
+            for (int i = 0; i < s.Length; i++)
             {
-                if (inputFile[i] == ';')
+                if (s[i] == ";")
                 {
                     tableSize = i;
                     break;
@@ -121,7 +120,7 @@ namespace adjacency_matrix
         {
             
             bool[,] transitive_matrix = transformAdjacencyMatrixToTransitiveMatrix(adjacency_matrix);
-            for (int k = 0; k < tableSize; k++)
+            for (int k = 0; k < tableSize;  k++)
             {
                 for (int i = 0; i < tableSize; i++)
                 {
